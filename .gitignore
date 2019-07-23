@@ -303,3 +303,5 @@ kube/**/requirements.lock
 
 docker/balloon.iot.platform.metrics-influxdb/data/*
 nuget/
+
+**/secrets/

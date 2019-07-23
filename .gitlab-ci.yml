@@ -1,0 +1,65 @@
+stages: 
+  - util
+  - build
+  - deploy
+
+variables:  
+  ASPNETCORE_ENVIRONMENT: Production  
+  COMPOSE_HTTP_TIMEOUT: "1200"
+  MAJOR_VERSION: 0
+  MINOR_VERSION: 0
+
+before_script:  
+  - export TAG=$MAJOR_VERSION.$MINOR_VERSION-`echo $CI_COMMIT_REF_NAME | sed 's/\//_/g' | tr '[:upper:]' '[:lower:]'`-$CI_PIPELINE_ID
+  - echo $TAG
+  - export TAG_GITLAB=registry.gitlab.com/sv1r4/shome.fulfillment:$TAG
+  - echo $TAG_GITLAB
+  - export TAG_GCP=gcr.io/shome-assistant/shome.fulfillment:$TAG
+  - echo $TAG_GCP
+
+util:docker-gcloud-sdk:
+  image: docker
+  stage: util
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com    
+    - export T=registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+    - docker build -t $T ./util/docker-gcloud-sdk
+    - docker push $T
+  when: manual
+  
+build:images:gcp:
+  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+  stage: build
+  services:
+    - docker:dind    
+  script:
+    - mkdir -p ./src/shome.fulfillment.web/secrets
+    - echo $GCP_KEY_DATASTORE > ./src/shome.fulfillment.web/secrets/service_key.json
+    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
+    - docker build -t $TAG_GCP -f ./src/shome.fulfillment.web/Dockerfile .
+    - docker push $TAG_GCP
+  only:
+    - master  
+
+build:images:gitlab:
+  image: docker
+  stage: build
+  services:
+    - docker:dind    
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t $TAG_GITLAB -f ./src/shome.fulfillment.web/Dockerfile .
+    - docker push $TAG_GITLAB
+
+deploy:cloud-run:
+  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:    
+    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
+    - gcloud beta run deploy shome-fulfillment-web --image $TAG_GCP --platform managed --project $GCP_PROJECT_ID --region us-central1 --allow-unauthenticated --set-env-vars MqttConfig__Host=$MqttConfig__Host,MqttConfig__Port=$MqttConfig__Port,MqttConfig__User=$MqttConfig__User,MqttConfig__Password=$MqttConfig__Password,MqttConfig__Tls=$MqttConfig__Tls,GcpDatastoreConfig__ProjectId=$GcpDatastoreConfig__ProjectId,FulfillmentAuthenticationOptions__Secret=$FulfillmentAuthenticationOptions__Secret
+  only:
+    - master  
