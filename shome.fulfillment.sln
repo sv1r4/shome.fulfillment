@@ -5,6 +5,34 @@ VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.web", "src\shome.fulfillment.web\shome.fulfillment.web.csproj", "{4084A3A6-20DD-414E-87F4-E751DF0AB384}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.store", "src\shome.fulfillment.store\shome.fulfillment.store.csproj", "{4F636BF0-FF06-451F-87F5-B85655C1080A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.store.gcp.datastore", "src\shome.fulfillment.store.gcp.datastore\shome.fulfillment.store.gcp.datastore.csproj", "{E6FC60E5-55C2-4BA6-AD34-A1371ED48786}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7679C5F3-3E57-4EDA-81FB-E9DE4D5C6FA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.store.gcp.datastore.integrationtests", "test\shome.fulfillment.store.gcp.datastore.integrationtests\shome.fulfillment.store.gcp.datastore.integrationtests.csproj", "{0D519787-F208-46ED-ADDB-9CF05F8BD039}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shome.fulfillment.mqtt", "src\shome.fulfillment.mqtt\shome.fulfillment.mqtt.csproj", "{C1901343-0898-4A0A-9561-374962D39C05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shome.fulfillment.mqtt.mqttnet", "src\shome.fulfillment.mqtt.mqttnet\shome.fulfillment.mqtt.mqttnet.csproj", "{15F0A494-5588-43E5-9911-D3EB3900641F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shome.fulfillment.mqtt.mqttnet.integrationtests", "test\shome.fulfillment.mqtt.mqttnet.integrationtests\shome.fulfillment.mqtt.mqttnet.integrationtests.csproj", "{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.web.integrationtests", "test\shome.fulfillment.web.integrationtests\shome.fulfillment.web.integrationtests.csproj", "{4563BC08-8961-4038-ADA4-D14CD8E413CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ci", "ci", "{7AA28A79-CE02-4EE3-8C86-55A091355122}"
+	ProjectSection(SolutionItems) = preProject
+		.gitlab-ci.yml = .gitlab-ci.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "util", "util", "{B9080A9F-797D-4935-BA34-6DD10FA557ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-gcloud-sdk", "docker-gcloud-sdk", "{B60C3432-7102-46DC-B21B-FC08DE7B1DB5}"
+	ProjectSection(SolutionItems) = preProject
+		util\docker-gcloud-sdk\Dockerfile = util\docker-gcloud-sdk\Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +43,43 @@ Global
 		{4084A3A6-20DD-414E-87F4-E751DF0AB384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4084A3A6-20DD-414E-87F4-E751DF0AB384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4084A3A6-20DD-414E-87F4-E751DF0AB384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F636BF0-FF06-451F-87F5-B85655C1080A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F636BF0-FF06-451F-87F5-B85655C1080A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F636BF0-FF06-451F-87F5-B85655C1080A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F636BF0-FF06-451F-87F5-B85655C1080A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6FC60E5-55C2-4BA6-AD34-A1371ED48786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6FC60E5-55C2-4BA6-AD34-A1371ED48786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6FC60E5-55C2-4BA6-AD34-A1371ED48786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6FC60E5-55C2-4BA6-AD34-A1371ED48786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D519787-F208-46ED-ADDB-9CF05F8BD039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D519787-F208-46ED-ADDB-9CF05F8BD039}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D519787-F208-46ED-ADDB-9CF05F8BD039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D519787-F208-46ED-ADDB-9CF05F8BD039}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1901343-0898-4A0A-9561-374962D39C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1901343-0898-4A0A-9561-374962D39C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1901343-0898-4A0A-9561-374962D39C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1901343-0898-4A0A-9561-374962D39C05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F0A494-5588-43E5-9911-D3EB3900641F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F0A494-5588-43E5-9911-D3EB3900641F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F0A494-5588-43E5-9911-D3EB3900641F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F0A494-5588-43E5-9911-D3EB3900641F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4563BC08-8961-4038-ADA4-D14CD8E413CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4563BC08-8961-4038-ADA4-D14CD8E413CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4563BC08-8961-4038-ADA4-D14CD8E413CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4563BC08-8961-4038-ADA4-D14CD8E413CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0D519787-F208-46ED-ADDB-9CF05F8BD039} = {7679C5F3-3E57-4EDA-81FB-E9DE4D5C6FA4}
+		{723A1C1F-68A8-4F0D-995C-0EB5FD5D4D2D} = {7679C5F3-3E57-4EDA-81FB-E9DE4D5C6FA4}
+		{4563BC08-8961-4038-ADA4-D14CD8E413CB} = {7679C5F3-3E57-4EDA-81FB-E9DE4D5C6FA4}
+		{B60C3432-7102-46DC-B21B-FC08DE7B1DB5} = {B9080A9F-797D-4935-BA34-6DD10FA557ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E41192C1-2EB8-4A7F-B286-1747EBED9222}
