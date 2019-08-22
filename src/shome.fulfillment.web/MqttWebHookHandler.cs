@@ -63,7 +63,7 @@ namespace shome.fulfillment.web
                 {
                     "google", new
                     {
-                        expectUserResponse = isEndInteraction
+                        expectUserResponse = !isEndInteraction
                     }
                 }
             };
