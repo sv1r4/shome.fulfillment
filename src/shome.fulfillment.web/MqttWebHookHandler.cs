@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Google.Apis.Dialogflow.v2.Data;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using shome.fulfillment.mqtt;
 using shome.fulfillment.store;
 using shome.fulfillment.web.extensions;
@@ -20,8 +23,16 @@ namespace shome.fulfillment.web
             _intentStore = intentStore;
         }
 
-        public async Task<GoogleCloudDialogflowV2WebhookResponse> HandleAsync(GoogleCloudDialogflowV2WebhookRequest request)
+        public async Task<GoogleCloudDialogflowV2WebhookResponse> HandleAsync(string json)
         {
+            //GoogleCloudDialogflowV2WebhookRequest does not contain endInteraction field 
+            //this is why raw parsing needed =(
+            dynamic rawJson = JObject.Parse(json);
+            var isEndInteraction = rawJson?.queryResult?.intent?.endInteraction == true;
+
+
+            var request = JsonConvert.DeserializeObject<GoogleCloudDialogflowV2WebhookRequest>(json);
+           
             var intentName = request?.QueryResult?.Intent?.DisplayName;
             _logger.LogDebug("{IntentName}", intentName);
             if (string.IsNullOrWhiteSpace(intentName))
@@ -46,10 +57,20 @@ namespace shome.fulfillment.web
             }
 
             await _mqtt.PublishAsync(mqttIntent.Topic, mqttIntent.TranslateMqttMessage(request.QueryResult.Parameters));
-
+            
+            var payload = new Dictionary<string, object>
+            {
+                {
+                    "google", new
+                    {
+                        expectUserResponse = isEndInteraction
+                    }
+                }
+            };
             var response = new GoogleCloudDialogflowV2WebhookResponse
             {
-                FulfillmentText = mqttIntent.TranslateResponseMessage(request.QueryResult)
+                FulfillmentText = mqttIntent.TranslateResponseMessage(request.QueryResult),
+                Payload = payload
             };
 
             

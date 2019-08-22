@@ -30,8 +30,7 @@ namespace shome.fulfillment.web.Controllers
             {
                 var json = await sr.ReadToEndAsync();
                 _logger.LogDebug("Got {request}", json);
-
-                var hookResponse = await _handler.HandleAsync(JsonConvert.DeserializeObject<GoogleCloudDialogflowV2WebhookRequest>(json));
+                var hookResponse = await _handler.HandleAsync(json);
                 
                 Response.ContentType = "application/json; charset=utf-8";
                 await Response.WriteAsync(JsonConvert.SerializeObject(hookResponse));
