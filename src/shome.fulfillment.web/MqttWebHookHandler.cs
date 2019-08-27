@@ -29,7 +29,15 @@ namespace shome.fulfillment.web
             //this is why raw parsing needed =(
             dynamic rawJson = JObject.Parse(json);
             var isEndInteraction = rawJson?.queryResult?.intent?.endInteraction == true;
-
+            var payload = new Dictionary<string, object>
+            {
+                {
+                    "google", new
+                    {
+                        expectUserResponse = !isEndInteraction
+                    }
+                }
+            };
 
             var request = JsonConvert.DeserializeObject<GoogleCloudDialogflowV2WebhookRequest>(json);
            
@@ -41,7 +49,8 @@ namespace shome.fulfillment.web
                 
                 return new GoogleCloudDialogflowV2WebhookResponse
                 {
-                    FulfillmentText = request?.QueryResult?.FulfillmentText ?? string.Empty
+                    FulfillmentText = request?.QueryResult?.FulfillmentText ?? string.Empty,
+                    Payload = payload
                 };
             }
 
@@ -52,21 +61,14 @@ namespace shome.fulfillment.web
                 
                 return new GoogleCloudDialogflowV2WebhookResponse
                 {
-                    FulfillmentText = request.QueryResult?.FulfillmentText ?? string.Empty
+                    FulfillmentText = request.QueryResult?.FulfillmentText ?? string.Empty,
+                    Payload = payload
                 };
             }
 
             await _mqtt.PublishAsync(mqttIntent.Topic, mqttIntent.TranslateMqttMessage(request.QueryResult.Parameters));
             
-            var payload = new Dictionary<string, object>
-            {
-                {
-                    "google", new
-                    {
-                        expectUserResponse = !isEndInteraction
-                    }
-                }
-            };
+            
             var response = new GoogleCloudDialogflowV2WebhookResponse
             {
                 FulfillmentText = mqttIntent.TranslateResponseMessage(request.QueryResult),
