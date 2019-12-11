@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2.8-bionic AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-alpine AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2.207-bionic AS build
 WORKDIR /src
 COPY ["src/shome.fulfillment.web/shome.fulfillment.web.csproj", "shome.fulfillment.web/"]
 COPY ["src/shome.fulfillment.mqtt/shome.fulfillment.mqtt.csproj", "shome.fulfillment.mqtt/"]
@@ -13,8 +13,8 @@ COPY . .
 WORKDIR "/src/src/shome.fulfillment.web"
 RUN dotnet publish "shome.fulfillment.web.csproj" -c Release -o /app
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-alpine AS final
-RUN apk add --update --no-cache curl libc6-compat
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2.8-bionic AS final
+#RUN apk add --update --no-cache curl libc6-compat
 WORKDIR /app
 COPY --from=build /app .
 ENV GOOGLE_APPLICATION_CREDENTIALS /app/secrets/service_key.json
