@@ -1,7 +1,7 @@
 stages: 
   - util
   - provisioning
-  - build
+  #- build
   - deploy
 
 variables:  
@@ -39,68 +39,60 @@ util:docker-gcloud-sdk:
     - docker build -t $T ./util/docker-gcloud-sdk
     - docker push $T
   when: manual
-  
-build:images:gcp:
-  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
-  stage: build
-  services:
-    - docker:dind    
-  script:
-    - mkdir -p ./src/shome.fulfillment.web/secrets
-    - echo $GCP_KEY_DATASTORE > ./src/shome.fulfillment.web/secrets/service_key.json
-    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
-    - docker build -t $TAG_GCP -f ./src/shome.fulfillment.web/Dockerfile .
-    - docker push $TAG_GCP
-  only:
-    - master  
 
-build:images:gitlab:
+util:docker-dotnet-sdk-azure-functions:
   image: docker
-  stage: build
+  stage: util
   services:
-    - docker:dind    
+    - docker:dind
   script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t $TAG_GITLAB -f ./src/shome.fulfillment.web/Dockerfile .
-    - docker push $TAG_GITLAB
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com    
+    - export T=registry.gitlab.com/sv1r4/shome.fulfillment/dotnet-sdk-azure-functions:latest
+    - docker build -t $T ./util/docker-dotnet-sdk-azure-functions
+    - docker push $T
+  when: manual
+  
+# build:images:gcp:
+#  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+#  stage: build
+#  services:
+#    - docker:dind    
+#  script:
+#    - mkdir -p ./src/shome.fulfillment.web/secrets
+#    - echo $GCP_KEY_DATASTORE > ./src/shome.fulfillment.web/secrets/service_key.json
+#    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
+#    - docker build -t $TAG_GCP -f ./src/shome.fulfillment.web/Dockerfile .
+#    - docker push $TAG_GCP
+#  only:
+#    - master  
 
-deploy:cloud-run:
-  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
-  stage: deploy
-  variables:
-    GIT_STRATEGY: none
-  script:    
-    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
-    - gcloud beta run deploy shome-fulfillment-web --image $TAG_GCP --platform managed --project $GCP_PROJECT_ID --region us-central1 --allow-unauthenticated --set-env-vars MqttConfig__Host=$MqttConfig__Host,MqttConfig__Port=$MqttConfig__Port,MqttConfig__User=$MqttConfig__User,MqttConfig__Password=$MqttConfig__Password,MqttConfig__Tls=$MqttConfig__Tls,GcpDatastoreConfig__ProjectId=$GcpDatastoreConfig__ProjectId,FulfillmentAuthenticationOptions__Secret=$FulfillmentAuthenticationOptions__Secret
-  only:
-    - master  
+#build:images:gitlab:
+#  image: docker
+#  stage: build
+#  services:
+#    - docker:dind    
+#  script:
+#    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+#    - docker build -t $TAG_GITLAB -f ./src/shome.fulfillment.web/Dockerfile .
+#    - docker push $TAG_GITLAB
+
+#deploy:cloud-run:
+#  image: registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+#  stage: deploy
+#  variables:
+#    GIT_STRATEGY: none
+#  script:    
+#    - gcloud auth activate-service-account --key-file $GCP_KEY_FILE
+#    - gcloud beta run deploy shome-fulfillment-web --image $TAG_GCP --platform managed --project $GCP_PROJECT_ID --region us-central1 --allow-unauthenticated --set-env-vars MqttConfig__Host=$MqttConfig__Host,MqttConfig__Port=$MqttConfig__Port,MqttConfig__User=$MqttConfig__User,MqttConfig__Password=$MqttConfig__Password,MqttConfig__Tls=$MqttConfig__Tls,GcpDatastoreConfig__ProjectId=$GcpDatastoreConfig__ProjectId,FulfillmentAuthenticationOptions__Secret=$FulfillmentAuthenticationOptions__Secret
+#  only:
+#    - master  
 
 deploy:azure:
-  image: mcr.microsoft.com/dotnet/core/sdk:3.0.102-buster
+  image: registry.gitlab.com/sv1r4/shome.fulfillment/dotnet-sdk-azure-functions:latest
   stage: deploy
-  script:
-    - apt-get update
-    - apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
-    - >
-        curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
-        gpg --dearmor | 
-        sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
-    - AZ_REPO=$(lsb_release -cs)
-    - >
-        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
-        tee /etc/apt/sources.list.d/azure-cli.list
-    - apt-get update
-    - apt-get install azure-cli
-    - wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
-    - mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/
-    - wget -q https://packages.microsoft.com/config/debian/9/prod.list
-    - mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
-    - chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
-    - chown root:root /etc/apt/sources.list.d/microsoft-prod.list
-    - apt-get update
-    - apt-get install -y azure-functions-core-tools-3
+  script:   
     - az login --service-principal -u $AZ_LOGIN_CLIENT_ID -p $AZ_LOGIN_SECRET --tenant $AZ_LOGIN_TENANT_ID    
-    - az functionapp config appsettings set --settings "testprama=testvalue" --name $AZ_NAME_FUNC --resource-group $AZ_NAME_RG
+    - az functionapp config appsettings set --settings "param=testvalue" --name $AZ_NAME_FUNC --resource-group $AZ_NAME_RG
     - cd src/shome.fulfillment.azure.function
     - func azure functionapp publish $AZ_NAME_FUNC
   only:
