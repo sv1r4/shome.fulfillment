@@ -1,7 +1,7 @@
 stages: 
   - util
   - provisioning
-  -  build
+  - build
   - deploy
 
 variables:  
@@ -28,17 +28,17 @@ provisioning:azure:
     - az functionapp create --resource-group $AZ_NAME_RG --os-type Linux --consumption-plan-location $AZ_REGION --runtime dotnet --runtime-version 3 --functions-version 3 --name $AZ_NAME_FUNC --storage-account $AZ_NAME_SA
   when: manual
 
-util:docker-gcloud-sdk:
-  image: docker
-  stage: util
-  services:
-    - docker:dind
-  script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com    
-    - export T=registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
-    - docker build -t $T ./util/docker-gcloud-sdk
-    - docker push $T
-  when: manual
+#util:docker-gcloud-sdk:
+#  image: docker
+#  stage: util
+#  services:
+#    - docker:dind
+#  script:
+#    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com    
+#    - export T=registry.gitlab.com/sv1r4/shome.fulfillment/docker-gcloud-sdk:latest
+#    - docker build -t $T ./util/docker-gcloud-sdk
+#    - docker push $T
+#  when: manual
 
 util:docker-dotnet-sdk-azure-functions:
   image: docker
@@ -87,7 +87,7 @@ util:docker-dotnet-sdk-azure-functions:
 #  only:
 #    - master  
 
- build:azure-function:
+build:azure-function:
   image: mcr.microsoft.com/dotnet/core/sdk:3.1.102-buster
   stage: build
   script:
