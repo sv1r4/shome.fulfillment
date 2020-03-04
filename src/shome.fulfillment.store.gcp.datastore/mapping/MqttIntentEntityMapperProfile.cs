@@ -37,12 +37,12 @@ namespace shome.fulfillment.store.gcp.datastore.mapping
                 {
                     throw new InvalidOperationException($"Invalid {key} value = '{value}'. Should be array of strings");
                 }
-                var paramMap = pairStr.Split(paramSeparator);
+                var paramMap = pairStr.Split(new []{paramSeparator}, StringSplitOptions.None);
                 if (paramMap.Length != 2)
                 {
                     throw new InvalidOperationException($"Invalid {key} value = '{pairStr}'. Param and map should be separated with '{paramSeparator}'");
                 }
-                var fromTo = paramMap[1].Split(fromToSeparator);
+                var fromTo = paramMap[1].Split(new []{fromToSeparator}, StringSplitOptions.None);
                 if (fromTo.Length != 2)
                 {
                     throw new InvalidOperationException($"Invalid {key} value = '{pairStr}'. From and To should be separated with '{fromToSeparator}'");

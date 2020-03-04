@@ -12,7 +12,10 @@ namespace shome.fulfillment.mqtt.mqttnet.extensions
             services.AddOptions();
             services.Configure<MqttConfig>(configuration.GetSection(nameof(MqttConfig)));
             services.AddScoped<IMqttPublisher, MqttNetAdapter>();
-            services.AddSingleton<IMqttFactory, MqttFactory>();
+            services.AddSingleton<IMqttFactory>(sp =>
+            {
+                return new MqttFactory();
+            });
 
             return services;
         }

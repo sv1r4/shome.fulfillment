@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Google.Apis.Dialogflow.v2.Data;
 
-namespace shome.fulfillment.web
+namespace shome.fulfillment.azure.function
 {
     public interface IWebHookHandler
     {

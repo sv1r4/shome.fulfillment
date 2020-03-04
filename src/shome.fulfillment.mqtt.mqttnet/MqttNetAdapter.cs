@@ -49,11 +49,14 @@ namespace shome.fulfillment.mqtt.mqttnet
 
         private IMqttClientOptions GetConnectOptions()
         {
-            return new MqttClientOptionsBuilder()
+            var mqttOptionsBuilder = new MqttClientOptionsBuilder()
                 .WithCleanSession()
-                .WithClientId(Guid.NewGuid().ToString())
-                .WithCredentials(_mqttConfig.User, _mqttConfig.Password)
-                .WithTcpServer(_mqttConfig.Host, _mqttConfig.Port)
+                .WithClientId(Guid.NewGuid().ToString());
+            if (!string.IsNullOrWhiteSpace(_mqttConfig.User))
+            {
+                mqttOptionsBuilder = mqttOptionsBuilder.WithCredentials(_mqttConfig.User, _mqttConfig.Password);
+            }
+            return mqttOptionsBuilder.WithTcpServer(_mqttConfig.Host, _mqttConfig.Port)
                 .WithTls(tlsParameters =>
                 {
                     tlsParameters.UseTls = true;
