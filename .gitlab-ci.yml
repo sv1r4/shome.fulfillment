@@ -1,5 +1,6 @@
 stages: 
   - util
+  - provisioning
   - build
   - deploy
 
@@ -16,6 +17,16 @@ before_script:
   - echo $TAG_GITLAB
   - export TAG_GCP=gcr.io/shome-assistant/shome.fulfillment:$TAG
   - echo $TAG_GCP
+
+provisioning:azure:
+  image: mcr.microsoft.com/azure-cli
+  stage: provisioning
+  script:
+    - az login --service-principal -u $AZ_LOGIN_CLIENT_ID -p $AZ_LOGIN_SECRET --tenant $AZ_LOGIN_TENANT_ID
+    - az group create --name $AZ_NAME_RG --location $AZ_REGION
+    - az storage account create --name $AZ_NAME_SA --location $AZ_REGION --resource-group $AZ_NAME_RG --sku Standard_LRS
+    - az functionapp create --resource-group $AZ_NAME_RG --os-type Linux --consumption-plan-location $AZ_REGION --runtime dotnet --runtime-version 3 --functions-version 3 --name $AZ_NAME_FUNC --storage-account $AZ_NAME_SA
+  when: manual
 
 util:docker-gcloud-sdk:
   image: docker
