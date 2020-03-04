@@ -78,7 +78,7 @@ deploy:cloud-run:
 deploy:azure:
   image: mcr.microsoft.com/dotnet/core/sdk:3.0.102-buster
   stage: deploy
-  script:    
+  script:
     - apt-get update
     - apt-get install -y ca-certificates curl apt-transport-https lsb-release gnupg
     - >
