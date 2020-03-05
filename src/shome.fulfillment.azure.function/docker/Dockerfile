@@ -1,11 +1,9 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/azure-functions/dotnet:2.0 AS base
 ENV GOOGLE_APPLICATION_CREDENTIALS=secrets/service_key.json
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-alpine AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-buster AS build
 WORKDIR /src
 COPY ["src/shome.fulfillment.azure.function/shome.fulfillment.azure.function.csproj", "src/shome.fulfillment.azure.function/"]
 COPY ["src/shome.fulfillment.mqtt.mqttnet/shome.fulfillment.mqtt.mqttnet.csproj", "src/shome.fulfillment.mqtt.mqttnet/"]

@@ -59,7 +59,7 @@ namespace shome.fulfillment.mqtt.mqttnet
             return mqttOptionsBuilder.WithTcpServer(_mqttConfig.Host, _mqttConfig.Port)
                 .WithTls(tlsParameters =>
                 {
-                    tlsParameters.UseTls = true;
+                    tlsParameters.UseTls = _mqttConfig.Tls;
                 }).Build();
         }
 

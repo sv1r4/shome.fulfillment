@@ -5,7 +5,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "7080:80"
+      - "7080:8080"
 
   shome.fulfillment.azure.function:
     environment:

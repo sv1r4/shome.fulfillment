@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.1-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
+ENV PORT=8080
+EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-alpine AS build
 WORKDIR /src

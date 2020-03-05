@@ -6,11 +6,17 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="docker\obj\**" />
+    <EmbeddedResource Remove="docker\obj\**" />
+    <None Remove="docker\obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
-    <PackageReference Include="Google.Apis.Dialogflow.v2" Version="1.40.2.1612" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.4" />
+    <PackageReference Include="Google.Apis.Dialogflow.v2" Version="1.44.0.1881" />
     <PackageReference Include="Google.Cloud.Dialogflow.V2" Version="1.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
