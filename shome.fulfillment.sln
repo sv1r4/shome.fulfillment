@@ -35,7 +35,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-gcloud-sdk", "docker
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{EF04703D-8BEF-4F97-80CA-CA5C56C26E7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shome.fulfillment.azure.function", "src\shome.fulfillment.azure.function\shome.fulfillment.azure.function.csproj", "{C90F611D-7F7F-4BA3-A368-475D13EF00B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shome.fulfillment.azure.function", "src\shome.fulfillment.azure.function\shome.fulfillment.azure.function.csproj", "{C90F611D-7F7F-4BA3-A368-475D13EF00B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-dotnet-sdk-azure-functions", "docker-dotnet-sdk-azure-functions", "{83B07CFA-0EC8-4E9D-8196-57A451A64C56}"
+	ProjectSection(SolutionItems) = preProject
+		util\docker-dotnet-sdk-azure-functions\Dockerfile = util\docker-dotnet-sdk-azure-functions\Dockerfile
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{95FC078B-86BB-45FE-9AEC-6BAA47279E4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96453DB0-C5DD-4ACC-BAB1-155A5E151F92}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +91,10 @@ Global
 		{C90F611D-7F7F-4BA3-A368-475D13EF00B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C90F611D-7F7F-4BA3-A368-475D13EF00B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C90F611D-7F7F-4BA3-A368-475D13EF00B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95FC078B-86BB-45FE-9AEC-6BAA47279E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95FC078B-86BB-45FE-9AEC-6BAA47279E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95FC078B-86BB-45FE-9AEC-6BAA47279E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95FC078B-86BB-45FE-9AEC-6BAA47279E4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +106,7 @@ Global
 		{4563BC08-8961-4038-ADA4-D14CD8E413CB} = {7679C5F3-3E57-4EDA-81FB-E9DE4D5C6FA4}
 		{B60C3432-7102-46DC-B21B-FC08DE7B1DB5} = {B9080A9F-797D-4935-BA34-6DD10FA557ED}
 		{C90F611D-7F7F-4BA3-A368-475D13EF00B7} = {EF04703D-8BEF-4F97-80CA-CA5C56C26E7C}
+		{83B07CFA-0EC8-4E9D-8196-57A451A64C56} = {B9080A9F-797D-4935-BA34-6DD10FA557ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E41192C1-2EB8-4A7F-B286-1747EBED9222}

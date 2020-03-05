@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  shome.fulfillment.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7080:80"
+
+  shome.fulfillment.azure.function:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "7090:80"
+
+  mosquitto:
+    ports:
+      - "1885:1883"

@@ -15,7 +15,7 @@ namespace shome.fulfillment.azure.function
         public override void Configure(IFunctionsHostBuilder builder)
         {
             var config = new ConfigurationBuilder()
-                .AddJsonFile(new EmbeddedFileProvider(assembly:Assembly.GetExecutingAssembly()), "appsettings.json", true, false)
+                .AddJsonFile("local.settings.json", true, false)
                 .AddEnvironmentVariables()
                 .Build();
             builder.Services

@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  shome.fulfillment.web:
+    image: ${DOCKER_REGISTRY-}shome-fulfillment-web
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - MqttConfig__Host=mosquitto
+      - MqttConfig__Port=1883
+      - MqttConfig__User=""
+      - MqttConfig__Password=""
+      - MqttConfig__Tls=false
+      - GcpDatastoreConfig__ProjectId=shome-assistant
+    build:
+      context: .
+      dockerfile: src/shome.fulfillment.web/Dockerfile
+    volumes:
+      - ./src/shome.fulfillment.azure.function/secrets:/app/secrets
+
+
+  shome.fulfillment.azure.function:
+    image: ${DOCKER_REGISTRY-}shome-fulfillment-azure-fucntion
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - MqttConfig__Host=mosquitto
+      - MqttConfig__Port=1883
+      - MqttConfig__User=""
+      - MqttConfig__Password=""
+      - MqttConfig__Tls=false
+      - GcpDatastoreConfig__ProjectId=shome-assistant
+    build:
+      context: .
+      dockerfile: src/shome.fulfillment.azure.function/Dockerfile
+    volumes:
+      - ./src/shome.fulfillment.azure.function/secrets:/app/secrets
+      
+
+  mosquitto:
+    image: eclipse-mosquitto
+
