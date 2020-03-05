@@ -20,7 +20,7 @@ namespace shome.fulfillment.azure.function
 
         [FunctionName("fulfillment")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous,  "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function,  "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
