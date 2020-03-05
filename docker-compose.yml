@@ -9,7 +9,7 @@ services:
       - MqttConfig__User=""
       - MqttConfig__Password=""
       - MqttConfig__Tls=false
-      - GcpDatastoreConfig__ProjectId=shome-assistant
+      - GcpDatastoreConfig__ProjectId=${GcpDatastoreConfig__ProjectId}
     build:
       context: .
       dockerfile: src/shome.fulfillment.web/Dockerfile
@@ -25,8 +25,8 @@ services:
       - MqttConfig__User=''
       - MqttConfig__Password=''
       - MqttConfig__Tls=false
-      - GcpDatastoreConfig__ProjectId=shome-assistant
-      - GcpDatastoreConfig__KeyJson='{"type":"service_account","project_id":"shome-assistant","private_key_id":"df625e504a1a6795f770186cb29b8763f4526fcd","private_key":"-----BEGINPRIVATEKEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDbbXUOepuzO7AL\nyRRGK/2nVE3xU2Fo/6Q+OsrGa2TeeNhkc9zf8vveOEiKS2tYGyBYZDKH2v+U90jV\njCsMAWecDqec++YrHjmSgO/fRD87ybH9u+n+48YEpGmGhxCbPxhrp3jWmc10iI+D\neB6C4T7WlC59k8f1kFqU9yfG7RdprevbneL9hZ3zITip1K2B76lox+02lxbuoiEx\nm1Kdh72s1V6aPxghWWoyP/m+/c3GnHIycisw5iFPp8cmfxhxo8zr53WiYYRfdvlg\nkNCnUkR5tRCPFPRIkhABFxGnTN4oo45j0ZqIStVrTNRJ5ZSjtbSEUdHcOxNdPA9u\nodfWmE7TAgMBAAECggEAAvdp27ZAoJ2v9ZjUU1aI6Vg0bYzJBlheahD1aNVO2csc\ncc83Lzfju89a+7OlUd2cBFXmcPu+9M6bB3gLpO/n7K4uCetF41NXR+nCVGxhxncl\nlt6RfUarCKkIXC87RD4IIHx1H8GYi3jFJ+vZzb8p0FDUiBIVY/Z9owHsYb4W0PDo\nlEHlgjdOUUSbpQ7I9eefdAMwI990o9D19RXo0w6xwMnrjRBuob7h+xLcsHTYKL4H\ntiD0EHPWbAX2DqpZ4+ls6ZbqrepQMYDU+UwfSQApggqFeEA4cvnF7H8h+t1KiUEQ\nv7PciC9HFY92tD7Ay3gh2SezZnMCMKXe7OxefEX+cQKBgQDzXMmtiHUFP1O7YRi6\nQlDLWhU/kPI23gk7vPjVbPDwPjyHxrH+gOGChCBwwMXNUmp08yKOK1JQkCKrrYkP\nSZKCJrmjcsopBoKnyvkHgPJZAFj6IILLj+IgJZAG78qT8D8hZtNh9orOqxHjT1k1\nZSULVB1+flKZXG7FcxtITuJWPwKBgQDm0nvcbnkJzPZBSAg5jOM+Fy5M1bmH3CAv\naR2aYdkGNqMkjjXtqB79pvHzhP/FDUc9WIuoLFLXJR2k05Hm/Fi19lkVjqeBilsL\nC73B5BQSIhd2IvVaEsWi6/sOw0bxEcohpGa/x4w6hIzscJehDulF/8r9zCorgs6R\naPLLcZzqbQKBgF+hUZsAaUOTm/qg8A+ZKZiPIJRnB9cpryUrX/i2I4O0YSLVoHIr\nAPLBquHDzradMTodpLGLMoB38zfVLGu2dHzybLZe0DQI2+TFrNAXCqSQr2YyylLl\nim0pdYxURB2YJaahemUfdXI65P+W2a5SvZjTB/gB+cFMAjdSwSDL5sMPAoGBAMmj\niEZZT21LWrhOl7jGpeEg2PaQIiJYHtmr5wttfOwboMsXXG7/VgtZ4rVMMy9N2TTy\n/BVumvONXecWV7fELC7RRKM7WoMkfUIaAKu3df0dQQeXpGQKUBJyOYB9AKUpWD2p\nY4UXah3Ym08VULCG2SuoOAkcaJ5YB+IpHyiwWFbFAn8Y5ipCj03Qb53aZ5l2ryav\nL2tkakdS1xaQ9nJGsgL0qcZocEW1YXAEDr3BXeotyZMltl1SuIGACIgFWvv/fxJM\no4ZLCL1PZuiwFHecXdrEzjM/eQ1OliqcSZ7g+SZGa5znmLkJXSJ99pd/2bvSnng/\nS33OGJl5OLFmXK+4PGAL\n-----ENDPRIVATEKEY-----\n","client_email":"datastore-fulfillment@shome-assistant.iam.gserviceaccount.com","client_id":"106313374331064950820","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/datastore-fulfillment%40shome-assistant.iam.gserviceaccount.com"}'
+      - GcpDatastoreConfig__ProjectId=${GcpDatastoreConfig__ProjectId}
+      - GcpDatastoreConfig__KeyJson=${GcpDatastoreConfig__KeyJson}
     build:
       context: .
       dockerfile: src/shome.fulfillment.azure.function/Dockerfile

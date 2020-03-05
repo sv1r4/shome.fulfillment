@@ -306,3 +306,4 @@ nuget/
 
 **/secrets/
 **/.telemetry/
+.env
