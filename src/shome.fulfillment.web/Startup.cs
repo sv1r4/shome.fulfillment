@@ -25,9 +25,9 @@ namespace shome.fulfillment.web
         {
             services.AddControllers();
 
-            services.AddGcpDatastore(Configuration);
+            services.AddGcpDatastore();
 
-            services.AddMqttNetPublisher(Configuration);
+            services.AddMqttNetPublisher();
 
             services.AddScoped<IWebHookHandler, MqttWebHookHandler>();
 

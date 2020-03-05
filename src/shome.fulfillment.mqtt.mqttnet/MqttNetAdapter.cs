@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
@@ -15,11 +14,9 @@ namespace shome.fulfillment.mqtt.mqttnet
     {
         private readonly IMqttClient _mqtt;
         private readonly MqttConfig _mqttConfig;
-        private readonly ILogger _logger;
 
-        public MqttNetAdapter(ILogger<MqttNetAdapter> logger, IMqttFactory mqttFactory, IOptions<MqttConfig> mqttConfig)
+        public MqttNetAdapter(IMqttFactory mqttFactory, IOptions<MqttConfig> mqttConfig)
         {
-            _logger = logger;
             _mqtt = mqttFactory.CreateMqttClient();
             _mqttConfig = mqttConfig.Value;
         }
@@ -29,7 +26,6 @@ namespace shome.fulfillment.mqtt.mqttnet
             var connectResult = await _mqtt.ConnectAsync(GetConnectOptions());
             if (connectResult.ResultCode != MqttClientConnectResultCode.Success)
             {
-                _logger.LogError("Error connect to MQTT server {{ResultCode}} {{ConnectResult}}", connectResult.ResultCode, connectResult);
                 return false;
             }
 

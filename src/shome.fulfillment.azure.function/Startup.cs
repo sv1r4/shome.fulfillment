@@ -1,9 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
 using shome.fulfillment.mqtt.mqttnet.extensions;
 using shome.fulfillment.store.gcp.datastore.extensions;
 
@@ -14,16 +10,17 @@ namespace shome.fulfillment.azure.function
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("local.settings.json", true, false)
-                .AddEnvironmentVariables()
-                .Build();
+            
+            //var config = new ConfigurationBuilder()
+            //    .AddJsonFile("local.settings.json", true, false)
+            //    .AddEnvironmentVariables()
+            //    .Build();
             builder.Services
-                .AddLogging(lb=>lb.AddConfiguration(config))
-                .AddMqttNetPublisher(config)
-                .AddGcpDatastore(config)
                 .AddScoped<IWebHookHandler, MqttWebHookHandler>()
-                .AddOptions();
+                //.AddLogging(lb => lb.AddConfiguration(config))
+                .AddMqttNetPublisher()
+                .AddGcpDatastore()
+                ;
         }
     }
 }

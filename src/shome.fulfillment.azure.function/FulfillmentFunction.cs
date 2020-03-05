@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +11,7 @@ namespace shome.fulfillment.azure.function
 {
     public class FulfillmentFunction
     {
-        private readonly IWebHookHandler _handler;
+        private IWebHookHandler _handler;
 
         public FulfillmentFunction(IWebHookHandler handler)
         {

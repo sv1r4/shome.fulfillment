@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Google.Apis.Dialogflow.v2.Data;
-using Google.Apis.Download;
 using shome.fulfillment.store;
 
 namespace shome.fulfillment.web.extensions

@@ -10,14 +10,16 @@ namespace shome.fulfillment.store.gcp.datastore.extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddGcpDatastore(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddGcpDatastore(this IServiceCollection services)
         {
-            services.AddOptions();
-            services.Configure<GcpDatastoreConfig>(config.GetSection(nameof(GcpDatastoreConfig)));
             services.AddScoped<IMqttIntentStore, GcpDatastoreMqttIntentStore>();
             
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MqttIntentEntityMapperProfile)));
             services.AddSingleton(new DataStoreKind(nameof(MqttIntent)));
+            services.AddOptions<GcpDatastoreConfig>().Configure<IConfiguration>((settings, configuration) =>
+            {
+                configuration.GetSection(nameof(GcpDatastoreConfig)).Bind(settings);
+            });
             return services;
         }
     }

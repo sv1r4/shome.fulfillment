@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azure-functions/dotnet:2.0 AS base
+FROM mcr.microsoft.com/azure-functions/dotnet:3.0 AS base
 ENV GOOGLE_APPLICATION_CREDENTIALS=secrets/service_key.json
 WORKDIR /app
 EXPOSE 80
