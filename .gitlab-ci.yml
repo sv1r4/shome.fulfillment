@@ -107,7 +107,7 @@ deploy:azure:
     GIT_STRATEGY: none
   script:   
     - az login --service-principal -u $AZ_LOGIN_CLIENT_ID -p $AZ_LOGIN_SECRET --tenant $AZ_LOGIN_TENANT_ID    
-    - az functionapp config appsettings set --name $AZ_NAME_FUNC --resource-group $AZ_NAME_RG --settings "GOOGLE_APPLICATION_CREDENTIALS=secrets/service_key.json MqttConfig__Host=$MqttConfig__Host MqttConfig__Port=$MqttConfig__Port MqttConfig__User=$MqttConfig__User MqttConfig__Password=$MqttConfig__Password MqttConfig__Tls=$MqttConfig__Tls GcpDatastoreConfig__ProjectId=$GcpDatastoreConfig__ProjectId FulfillmentAuthenticationOptions__Secret=$FulfillmentAuthenticationOptions__Secret" 
+    - az functionapp config appsettings set --name $AZ_NAME_FUNC --resource-group $AZ_NAME_RG --settings GOOGLE_APPLICATION_CREDENTIALS=secrets/service_key.json MqttConfig__Host=$MqttConfig__Host MqttConfig__Port=$MqttConfig__Port MqttConfig__User=$MqttConfig__User MqttConfig__Password=$MqttConfig__Password MqttConfig__Tls=$MqttConfig__Tls GcpDatastoreConfig__ProjectId=$GcpDatastoreConfig__ProjectId FulfillmentAuthenticationOptions__Secret=$FulfillmentAuthenticationOptions__Secret
     - cd app/publish/shome.fulfillment.azure.function
     - mkdir -p secrets
     - echo $GCP_KEY_DATASTORE > secrets/service_key.json    
