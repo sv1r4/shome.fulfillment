@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using shome.fulfillment.mqtt.config;
 using shome.fulfillment.mqtt.mqttnet.extensions;
 
 namespace shome.fulfillment.mqtt.mqttnet.integrationtests
@@ -20,7 +19,7 @@ namespace shome.fulfillment.mqtt.mqttnet.integrationtests
 
             var services = new ServiceCollection();
             services.AddMqttNetPublisher();
-            services.Configure<MqttConfig>(config.GetSection(nameof(MqttConfig)));
+            services.AddSingleton<IConfiguration>(config);
 
             var sp = services.BuildServiceProvider();
 
