@@ -59,18 +59,21 @@ namespace shome.fulfillment.mqtt.mqttnet
                 }).Build();
         }
 
-        public void Dispose()
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            Console.WriteLine("disposoing");
             try
             {
-                _mqtt?.DisconnectAsync().GetAwaiter().GetResult();
+                if (_mqtt != null)
+                {
+                    await _mqtt.DisconnectAsync();
+                }
             }
             finally
             {
                 _mqtt?.Dispose();
             }
-            
-            
         }
     }
 }

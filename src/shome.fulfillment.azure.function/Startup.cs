@@ -10,16 +10,10 @@ namespace shome.fulfillment.azure.function
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            
-            //var config = new ConfigurationBuilder()
-            //    .AddJsonFile("local.settings.json", true, false)
-            //    .AddEnvironmentVariables()
-            //    .Build();
             builder.Services
                 .AddScoped<IWebHookHandler, MqttWebHookHandler>()
-                //.AddLogging(lb => lb.AddConfiguration(config))
-                .AddMqttNetPublisher()
-                .AddGcpDatastore()
+                .AddMqttNetPublisher(ServiceLifetime.Singleton)
+                .AddCacheableGcpDatastore()
                 ;
         }
     }
