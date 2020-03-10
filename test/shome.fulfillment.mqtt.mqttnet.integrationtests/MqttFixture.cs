@@ -18,8 +18,8 @@ namespace shome.fulfillment.mqtt.mqttnet.integrationtests
            
 
             var services = new ServiceCollection();
-            services.AddMqttNetPublisher(config);
-            services.AddLogging();
+            services.AddMqttNetPublisher();
+            services.AddSingleton<IConfiguration>(config);
 
             var sp = services.BuildServiceProvider();
 

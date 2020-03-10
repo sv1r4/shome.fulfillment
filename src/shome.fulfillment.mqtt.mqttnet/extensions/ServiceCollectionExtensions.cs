@@ -7,12 +7,14 @@ namespace shome.fulfillment.mqtt.mqttnet.extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddMqttNetPublisher(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddMqttNetPublisher(this IServiceCollection services, ServiceLifetime mqttLifetime = ServiceLifetime.Scoped)
         {
-            services.AddOptions();
-            services.Configure<MqttConfig>(configuration.GetSection(nameof(MqttConfig)));
-            services.AddScoped<IMqttPublisher, MqttNetAdapter>();
-            services.AddSingleton<IMqttFactory, MqttFactory>();
+            services.Add(new ServiceDescriptor(typeof(IMqttPublisher), typeof(MqttNetAdapter), mqttLifetime));
+            services.AddSingleton<IMqttFactory>(new MqttFactory());
+            services.AddOptions<MqttConfig>().Configure<IConfiguration>((settings, configuration) =>
+            {
+                configuration.GetSection(nameof(MqttConfig)).Bind(settings);
+            });
 
             return services;
         }

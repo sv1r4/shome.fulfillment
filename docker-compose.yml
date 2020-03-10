@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  shome.fulfillment.web:
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - MqttConfig__Host=mosquitto
+      - MqttConfig__Port=1883
+      - MqttConfig__User=""
+      - MqttConfig__Password=""
+      - MqttConfig__Tls=false
+      - GcpDatastoreConfig__ProjectId=${GcpDatastoreConfig__ProjectId}
+    build:
+      context: .
+      dockerfile: src/shome.fulfillment.web/Dockerfile
+    volumes:
+      - ./secrets:/app/secrets
+
+
+  shome.fulfillment.azure.function:
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - MqttConfig__Host=mosquitto
+      - MqttConfig__Port=1883
+      - MqttConfig__User=''
+      - MqttConfig__Password=''
+      - MqttConfig__Tls=false
+      - GcpDatastoreConfig__ProjectId=${GcpDatastoreConfig__ProjectId}
+      - GcpDatastoreConfig__KeyJson=${GcpDatastoreConfig__KeyJson}
+    build:
+      context: .
+      dockerfile: src/shome.fulfillment.azure.function/Dockerfile
+      
+
+  mosquitto:
+    image: eclipse-mosquitto:1.5
+

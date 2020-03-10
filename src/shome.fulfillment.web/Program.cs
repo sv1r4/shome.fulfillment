@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace shome.fulfillment.web
 {
@@ -11,13 +11,17 @@ namespace shome.fulfillment.web
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        public static IHostBuilder CreateWebHostBuilder(string[] args)
         {
             var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseUrls($"http://0.0.0.0:{port}");
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>()
+                        .UseUrls($"http://0.0.0.0:{port}");
+                });
+
         }
     }
 }

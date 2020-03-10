@@ -28,7 +28,8 @@ namespace shome.fulfillment.store.gcp.datastore.integrationtests
            
 
             var services = new ServiceCollection();
-            services.AddGcpDatastore(config);
+            services.AddGcpDatastore();
+            services.AddSingleton<IConfiguration>(config);
             var toRemove = services.Single(s => s.ServiceType == typeof(DataStoreKind));
 
             services.Remove(toRemove);

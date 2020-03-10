@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MQTTnet;
 using MQTTnet.Client;
@@ -15,11 +14,9 @@ namespace shome.fulfillment.mqtt.mqttnet
     {
         private readonly IMqttClient _mqtt;
         private readonly MqttConfig _mqttConfig;
-        private readonly ILogger _logger;
 
-        public MqttNetAdapter(ILogger<MqttNetAdapter> logger, IMqttFactory mqttFactory, IOptions<MqttConfig> mqttConfig)
+        public MqttNetAdapter(IMqttFactory mqttFactory, IOptions<MqttConfig> mqttConfig)
         {
-            _logger = logger;
             _mqtt = mqttFactory.CreateMqttClient();
             _mqttConfig = mqttConfig.Value;
         }
@@ -29,7 +26,6 @@ namespace shome.fulfillment.mqtt.mqttnet
             var connectResult = await _mqtt.ConnectAsync(GetConnectOptions());
             if (connectResult.ResultCode != MqttClientConnectResultCode.Success)
             {
-                _logger.LogError("Error connect to MQTT server {{ResultCode}} {{ConnectResult}}", connectResult.ResultCode, connectResult);
                 return false;
             }
 
@@ -49,29 +45,35 @@ namespace shome.fulfillment.mqtt.mqttnet
 
         private IMqttClientOptions GetConnectOptions()
         {
-            return new MqttClientOptionsBuilder()
+            var mqttOptionsBuilder = new MqttClientOptionsBuilder()
                 .WithCleanSession()
-                .WithClientId(Guid.NewGuid().ToString())
-                .WithCredentials(_mqttConfig.User, _mqttConfig.Password)
-                .WithTcpServer(_mqttConfig.Host, _mqttConfig.Port)
+                .WithClientId(Guid.NewGuid().ToString());
+            if (!string.IsNullOrWhiteSpace(_mqttConfig.User))
+            {
+                mqttOptionsBuilder = mqttOptionsBuilder.WithCredentials(_mqttConfig.User, _mqttConfig.Password);
+            }
+            return mqttOptionsBuilder.WithTcpServer(_mqttConfig.Host, _mqttConfig.Port)
                 .WithTls(tlsParameters =>
                 {
-                    tlsParameters.UseTls = true;
+                    tlsParameters.UseTls = _mqttConfig.Tls;
                 }).Build();
         }
 
-        public void Dispose()
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
         {
+            Console.WriteLine("disposoing");
             try
             {
-                _mqtt?.DisconnectAsync().GetAwaiter().GetResult();
+                if (_mqtt != null)
+                {
+                    await _mqtt.DisconnectAsync();
+                }
             }
             finally
             {
                 _mqtt?.Dispose();
             }
-            
-            
         }
     }
 }
