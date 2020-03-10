@@ -10,13 +10,13 @@ variables:
   MAJOR_VERSION: 0
   MINOR_VERSION: 0
 
-before_script:  
-  - export TAG=$MAJOR_VERSION.$MINOR_VERSION-`echo $CI_COMMIT_REF_NAME | sed 's/\//_/g' | tr '[:upper:]' '[:lower:]'`-$CI_PIPELINE_ID
-  - echo $TAG
-  - export TAG_GITLAB=registry.gitlab.com/sv1r4/shome.fulfillment:$TAG
-  - echo $TAG_GITLAB
-  - export TAG_GCP=gcr.io/shome-assistant/shome.fulfillment:$TAG
-  - echo $TAG_GCP
+#before_script:  
+#  - export TAG=$MAJOR_VERSION.$MINOR_VERSION-`echo $CI_COMMIT_REF_NAME | sed 's/\//_/g' | tr '[:upper:]' '[:lower:]'`-$CI_PIPELINE_ID
+#  - echo $TAG
+#  - export TAG_GITLAB=registry.gitlab.com/sv1r4/shome.fulfillment:$TAG
+#  - echo $TAG_GITLAB
+#  - export TAG_GCP=gcr.io/$GCP_PROJECT_ID/shome.fulfillment:$TAG
+#  - echo $TAG_GCP
 
 provisioning:azure:
   image: mcr.microsoft.com/azure-cli
