@@ -19,7 +19,12 @@ namespace shome.fulfillment.store.gcp.datastore
         {
             _kind = kind;
             _mapper = mapper;
-            _db = DatastoreDb.Create(config.Value.ProjectId);
+            _db = DatastoreDb.Create(config.Value.ProjectId, client: string.IsNullOrWhiteSpace(config.Value.KeyJson)
+                ? null
+                : new DatastoreClientBuilder
+                {
+                    JsonCredentials = config.Value.KeyJson
+                }.Build());
             _keyFactory = _db.CreateKeyFactory(kind.MqttIntentKind);
         }
 

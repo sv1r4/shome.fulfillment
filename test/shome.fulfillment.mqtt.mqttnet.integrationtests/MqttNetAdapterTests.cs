@@ -36,7 +36,7 @@ namespace shome.fulfillment.mqtt.mqttnet.integrationtests
 
         public void Dispose()
         {
-            _mqtt?.Dispose();
+            _mqtt?.DisposeAsync().GetAwaiter().GetResult();
         }
     }
 }
