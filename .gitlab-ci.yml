@@ -98,7 +98,6 @@ build:azure-function:
     expire_in: 1 week
   only:
     - master
-    - feat/az-func
 
 deploy:azure:
   image: registry.gitlab.com/sv1r4/shome.fulfillment/dotnet-sdk-azure-functions:latest
@@ -112,4 +111,3 @@ deploy:azure:
     - func azure functionapp publish $AZ_NAME_FUNC --csharp --no-build
   only:
     - master  
-    - feat/az-func
