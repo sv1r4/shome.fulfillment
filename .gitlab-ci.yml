@@ -111,3 +111,14 @@ deploy:azure:
     - func azure functionapp publish $AZ_NAME_FUNC --csharp --no-build
   only:
     - master  
+
+
+deploy:wakeup:
+  image: byrnedo/alpine-curl
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:   
+    - curl --fail -i -d '{}' $FUNC_INVOKE_URL
+  only:
+    - schedules  
