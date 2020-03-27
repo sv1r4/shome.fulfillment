@@ -118,7 +118,6 @@ deploy:azure:
 
 
 deploy:wakeup:
-  image: byrnedo/alpine-curl
   stage: deploy
   variables:
     GIT_STRATEGY: none
