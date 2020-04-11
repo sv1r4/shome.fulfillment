@@ -31,7 +31,7 @@ namespace shome.fulfillment.azure.function
             //todo refactor wakeup hack
             if (req.Method.Equals("get", StringComparison.OrdinalIgnoreCase))
             {
-                _wakeupHandler.HandleAsync();
+                await _wakeupHandler.HandleAsync();
                 return new OkResult();
             }
             using var sr = new StreamReader(req.Body);
