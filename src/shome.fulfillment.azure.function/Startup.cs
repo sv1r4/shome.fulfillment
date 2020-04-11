@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using shome.fulfillment.azure.function.wakeup;
 using shome.fulfillment.mqtt.mqttnet.extensions;
 using shome.fulfillment.store.gcp.datastore.extensions;
 
@@ -12,6 +13,7 @@ namespace shome.fulfillment.azure.function
         {
             builder.Services
                 .AddScoped<IWebHookHandler, MqttWebHookHandler>()
+                .AddScoped<IWakeupHandler, WakeUpHandler>()
                 .AddMqttNetPublisher(ServiceLifetime.Singleton)
                 .AddCacheableGcpDatastore()
                 ;
