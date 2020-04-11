@@ -23,6 +23,10 @@ namespace shome.fulfillment.mqtt.mqttnet
 
         public async Task<bool> ConnectMqttAsync()
         {
+            if (_mqtt.IsConnected)
+            {
+                return true;
+            }
             var connectResult = await _mqtt.ConnectAsync(GetConnectOptions());
             if (connectResult.ResultCode != MqttClientConnectResultCode.Success)
             {
