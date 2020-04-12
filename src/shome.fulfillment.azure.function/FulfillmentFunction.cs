@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -8,19 +6,16 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using shome.fulfillment.azure.function.wakeup;
 
 namespace shome.fulfillment.azure.function
 {
     public class FulfillmentFunction
     {
         private readonly IWebHookHandler _handler;
-        private readonly IWakeupHandler _wakeupHandler;
 
-        public FulfillmentFunction(IWebHookHandler handler, IWakeupHandler wakeupHandler)
+        public FulfillmentFunction(IWebHookHandler handler)
         {
             _handler = handler;
-            _wakeupHandler = wakeupHandler;
         }
 
         [FunctionName("fulfillment")]
@@ -28,12 +23,6 @@ namespace shome.fulfillment.azure.function
             [HttpTrigger(AuthorizationLevel.Function, "post", "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            //todo refactor wakeup hack
-            if (req.Method.Equals("get", StringComparison.OrdinalIgnoreCase))
-            {
-                await _wakeupHandler.HandleAsync();
-                return new OkResult();
-            }
             using var sr = new StreamReader(req.Body);
 
             var json = await sr.ReadToEndAsync();
@@ -47,5 +36,7 @@ namespace shome.fulfillment.azure.function
             };
             return response;
         }
+
+
     }
 }

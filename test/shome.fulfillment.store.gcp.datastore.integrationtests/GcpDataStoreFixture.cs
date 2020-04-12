@@ -15,7 +15,7 @@ namespace shome.fulfillment.store.gcp.datastore.integrationtests
     {
         public DatastoreDb Db { get; }
         public KeyFactory KeyFactory { get; }
-        public IMqttIntentStore MqttIntentStore { get; }
+        public GcpDatastoreMqttIntentStore MqttIntentStore { get; }
         public string Kind { get; } = $"{nameof(MqttIntent)}_test";
 
         public IList<Key> EntityKeys { get; } = new List<Key>();
@@ -41,7 +41,7 @@ namespace shome.fulfillment.store.gcp.datastore.integrationtests
 
             Db =  DatastoreDb.Create(gcpConfig.ProjectId);
             KeyFactory = Db.CreateKeyFactory(Kind);
-            MqttIntentStore = sp.GetRequiredService<IMqttIntentStore>();
+            MqttIntentStore = (GcpDatastoreMqttIntentStore)sp.GetRequiredService<IMqttIntentStore>();
         }
 
         public void Dispose()

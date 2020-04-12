@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Google.Cloud.Datastore.V1;
@@ -38,6 +39,15 @@ namespace shome.fulfillment.store.gcp.datastore
             var queryResult = await _db.RunQueryAsync(q);
             var entity = queryResult.Entities.FirstOrDefault();
             return entity == null ? null : _mapper.Map<Entity, MqttIntent>(entity);
+        }
+
+        public async Task<IReadOnlyList<MqttIntent>> GetAllAsync()
+        {
+            var q = new Query(_kind.MqttIntentKind);
+
+            var queryResult = await _db.RunQueryAsync(q);
+            var entities = queryResult.Entities;
+            return entities == null ? null : _mapper.Map<IReadOnlyList<Entity>, IReadOnlyList<MqttIntent>>(entities);
         }
     }
 }

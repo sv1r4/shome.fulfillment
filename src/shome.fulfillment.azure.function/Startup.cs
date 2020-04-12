@@ -13,7 +13,7 @@ namespace shome.fulfillment.azure.function
         {
             builder.Services
                 .AddScoped<IWebHookHandler, MqttWebHookHandler>()
-                .AddScoped<IWakeupHandler, WakeUpHandler>()
+                .AddScoped<IWarmupHandler, WarmupHandler>()
                 .AddMqttNetPublisher(ServiceLifetime.Singleton)
                 .AddCacheableGcpDatastore()
                 ;

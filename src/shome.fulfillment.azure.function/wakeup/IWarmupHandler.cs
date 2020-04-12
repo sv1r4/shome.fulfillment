@@ -2,7 +2,7 @@
 
 namespace shome.fulfillment.azure.function.wakeup
 {
-    public interface IWakeupHandler
+    public interface IWarmupHandler
     {
         Task HandleAsync();
     }

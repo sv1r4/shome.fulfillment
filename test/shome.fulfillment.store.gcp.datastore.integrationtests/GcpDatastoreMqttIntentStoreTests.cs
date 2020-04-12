@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Google.Cloud.Datastore.V1;
 using Newtonsoft.Json;
@@ -133,5 +134,24 @@ namespace shome.fulfillment.store.gcp.datastore.integrationtests
             Assert.Equal(JsonConvert.SerializeObject(expectedIntent, Formatting.Indented), JsonConvert.SerializeObject(actualIntent, Formatting.Indented));
         }
 
+
+        [Fact]
+        public async Task FewIntentExists_GetAllAsync_AllReturned()
+        {
+            var expectedIntent = GenIntent("test intent 6");
+            var e1 = MapToEntity(_fixture.KeyFactory, expectedIntent);
+            var e2 = MapToEntity(_fixture.KeyFactory, GenIntent("test intent 7"));
+            var e3 = MapToEntity(_fixture.KeyFactory, GenIntent("test intent 8"));
+            var expectedIntents = new[] {e1, e2, e3};
+            await _fixture.Db.UpsertAsync(expectedIntents);
+
+            var actualIntents = await _fixture.MqttIntentStore.GetAllAsync();
+            Assert.NotNull(actualIntents);
+            Assert.All(expectedIntents, expectedIntent =>
+            {
+                Assert.Contains(actualIntents, 
+                    x =>string.Equals(expectedIntent.Key.Path[0].Name,x.IntentName, StringComparison.InvariantCulture));
+            });
+        }
     }
 }

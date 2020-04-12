@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Options;
@@ -17,10 +18,28 @@ namespace shome.fulfillment.store.gcp.datastore
         }
 
          
-        public Task<MqttIntent> FindAsync(string intentName)
+        public async Task<MqttIntent> FindAsync(string intentName)
         {
-            return Task.FromResult(_cache.GetOrAdd(intentName, intent => _gcpStore.FindAsync(intent).GetAwaiter().GetResult()));
+            if (_cache.ContainsKey(intentName))
+            {
+                return _cache[intentName];
+            }
 
+            var intent = await _gcpStore.FindAsync(intentName);
+            _cache.TryAdd(intentName, intent);
+            return intent;
+
+        }
+
+        public async Task<IReadOnlyList<MqttIntent>> GetAllAsync()
+        {
+            var intents = await _gcpStore.GetAllAsync();
+            foreach (var mqttIntent in intents)
+            {
+                _cache.TryAdd(mqttIntent.IntentName, mqttIntent);
+            }
+
+            return intents;
         }
     }
 }
