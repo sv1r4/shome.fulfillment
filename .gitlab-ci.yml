@@ -122,6 +122,6 @@ deploy:wakeup:
   variables:
     GIT_STRATEGY: none
   script:   
-    - curl --fail -i $FUNC_INVOKE_URL
+    - curl --fail -i $FUNC_WAKEUP_URL
   only:
     - schedules  

@@ -33,6 +33,7 @@ namespace shome.fulfillment.store.gcp.datastore
 
         public async Task<IReadOnlyList<MqttIntent>> GetAllAsync()
         {
+            //todo refactor cacheable re init
             var intents = await _gcpStore.GetAllAsync();
             foreach (var mqttIntent in intents)
             {
