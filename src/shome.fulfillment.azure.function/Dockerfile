@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/azure-functions/dotnet:3.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.201-buster AS build
 WORKDIR /src
 COPY ["src/shome.fulfillment.azure.function/shome.fulfillment.azure.function.csproj", "src/shome.fulfillment.azure.function/"]
 COPY ["src/shome.fulfillment.mqtt.mqttnet/shome.fulfillment.mqtt.mqttnet.csproj", "src/shome.fulfillment.mqtt.mqttnet/"]
