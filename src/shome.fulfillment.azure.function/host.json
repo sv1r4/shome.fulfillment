@@ -3,9 +3,9 @@
   "logging": {
     "logLevel": {
       "default": "Warning",
-      "Host.Results": "Error",
-      "Function": "Warning",
-      "Host.Aggregator": "Warning"
+      "Host.Results": "Information",
+      "Function": "Information",
+      "Host.Aggregator": "Trace"
     }
   }
 }
