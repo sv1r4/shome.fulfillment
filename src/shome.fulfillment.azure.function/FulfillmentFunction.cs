@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -23,18 +25,26 @@ namespace shome.fulfillment.azure.function
             [HttpTrigger(AuthorizationLevel.Function, "post", "get", Route = null)] HttpRequest req,
             ILogger log)
         {
-            using var sr = new StreamReader(req.Body);
-
-            var json = await sr.ReadToEndAsync();
-            log.LogDebug("Got {request}", json);
-            var hookResponse = await _handler.HandleAsync(json);
-
-            var response = new ContentResult
+            try
             {
-                ContentType = "application/json; charset=utf-8",
-                Content = JsonConvert.SerializeObject(hookResponse)
-            };
-            return response;
+                using var sr = new StreamReader(req.Body);
+
+                var json = await sr.ReadToEndAsync();
+                log.LogDebug("Got {request}", json);
+                var hookResponse = await _handler.HandleAsync(json);
+
+                var response = new ContentResult
+                {
+                    ContentType = "application/json; charset=utf-8",
+                    Content = JsonConvert.SerializeObject(hookResponse)
+                };
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Error handle request {function}", nameof(FulfillmentFunction));
+                return new ExceptionResult(ex, true);
+            }
         }
 
 

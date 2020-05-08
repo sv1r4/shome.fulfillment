@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -19,10 +21,20 @@ namespace shome.fulfillment.azure.function
 
         [FunctionName("warmup")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)]
+            HttpRequest req,
             ILogger log)
         {
-            await _warmupHandler.HandleAsync();
+            try
+            {
+                await _warmupHandler.HandleAsync();
+            }
+            catch (Exception ex)
+            {
+                log.LogError(ex, "Error handle request {function}", nameof(WarmupFunction));
+                return new ExceptionResult(ex, true);
+            }
+
             return new OkResult();
         }
     }
