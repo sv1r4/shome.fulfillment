@@ -88,7 +88,7 @@ util:docker-dotnet-sdk-azure-functions:
 #    - master  
 
 build:azure-function:
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1.201-buster
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1.300-buster
   stage: build
   script:    
     - dotnet publish src/shome.fulfillment.azure.function/shome.fulfillment.azure.function.csproj -c Release -o app/publish/shome.fulfillment.azure.function
