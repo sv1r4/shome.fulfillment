@@ -1,10 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace shome.fulfillment.mqtt.mqttnet.integrationtests
 {
-    public class MqttNetAdapterTests:IClassFixture<MqttFixture>, IDisposable
+    public class MqttNetAdapterTests:IClassFixture<MqttFixture>
     {
         private readonly IMqttPublisher _mqtt;
 
@@ -34,9 +33,5 @@ namespace shome.fulfillment.mqtt.mqttnet.integrationtests
             Assert.True(true);
         }
 
-        public void Dispose()
-        {
-            _mqtt?.DisposeAsync().GetAwaiter().GetResult();
-        }
     }
 }
