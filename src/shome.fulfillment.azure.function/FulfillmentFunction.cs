@@ -56,6 +56,11 @@ namespace shome.fulfillment.azure.function
                 };
                 return response;
             }
+            catch (JsonException ex)
+            {
+                log.LogError(ex, "handle request {function} JSON error", nameof(FulfillmentFunction));
+                return new BadRequestErrorMessageResult(ex.Message);
+            }
             catch (Exception ex)
             {
                 log.LogError(ex, "Error handle request {function}", nameof(FulfillmentFunction));
