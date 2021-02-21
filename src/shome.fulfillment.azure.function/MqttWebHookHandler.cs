@@ -4,9 +4,9 @@ using Google.Apis.Dialogflow.v2.Data;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using shome.fulfillment.azure.function.extensions;
 using shome.fulfillment.mqtt;
 using shome.fulfillment.store;
-using shome.fulfillment.web.extensions;
 
 namespace shome.fulfillment.azure.function
 {
@@ -66,7 +66,13 @@ namespace shome.fulfillment.azure.function
                 };
             }
 
-            await _mqtt.PublishAsync(mqttIntent.Topic, mqttIntent.TranslateMqttMessage(request.QueryResult.Parameters));
+
+            var mqttMessage = mqttIntent.TranslateMqttMessage(request.QueryResult.Parameters);
+
+            _logger.LogInformation("Got mqtt intent {intentName}. Topic={{topic}}. Payload={{payload}}",
+                intentName, mqttIntent.Topic, mqttMessage);
+
+            await _mqtt.PublishAsync(mqttIntent.Topic, mqttMessage);
             
             
             var response = new GoogleCloudDialogflowV2WebhookResponse

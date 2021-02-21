@@ -3,7 +3,7 @@ using System.Linq;
 using Google.Apis.Dialogflow.v2.Data;
 using shome.fulfillment.store;
 
-namespace shome.fulfillment.web.extensions
+namespace shome.fulfillment.azure.function.extensions
 {
     public static class MqttIntentExtensions
     {
@@ -12,7 +12,6 @@ namespace shome.fulfillment.web.extensions
             return TranslateString(mqttIntent.Message, mqttIntent.ParamMapMqtt, queryResultParameters);
         }
 
-       
         public static string TranslateResponseMessage(this MqttIntent mqttIntent, GoogleCloudDialogflowV2QueryResult queryResult)
         {
             return TranslateString(queryResult.FulfillmentMessages.FirstOrDefault()?.Text?.Text?.FirstOrDefault(), mqttIntent.ParamMapText, queryResult.Parameters);
